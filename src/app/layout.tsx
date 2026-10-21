@@ -11,8 +11,22 @@ const inter = Inter({
   display: "swap",
 });
 
+/**
+ * `metadataBase` must be an absolute URL, but its value comes from
+ * NEXT_PUBLIC_APP_URL — an environment variable that can be missing or
+ * malformed. `new URL()` throws ERR_INVALID_URL on a bad value, which would
+ * fail the whole build during page-data collection, so fall back instead.
+ */
+function metadataBase(): URL {
+  try {
+    return new URL(site.url);
+  } catch {
+    return new URL("https://at-academy.netlify.app");
+  }
+}
+
 export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
+  metadataBase: metadataBase(),
   title: {
     default: "SSC Chemistry Course & Online Learning | AT Academy",
     template: `%s · AT Academy`,
