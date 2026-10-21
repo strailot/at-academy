@@ -1,5 +1,6 @@
-# Keep local build caches, dependencies and secrets out of the upload.
-# Vercel builds from source, so none of these should be sent.
+# Vercel builds this project from the linked GitHub repository, so this file
+# only trims what a CLI upload would otherwise send. Keep it minimal and
+# explicit — overly broad patterns can starve the build of source files.
 
 node_modules
 .next
@@ -7,23 +8,20 @@ out
 build
 coverage
 
-# Secrets — production values are set as Vercel Environment Variables.
+# Real secrets never get deployed as files; production values are configured
+# as Vercel Environment Variables instead.
 .env
 .env.local
 .env.development.local
 .env.production.local
 .env.test.local
 
-# Local tooling / scratch
+# Local tooling state
 .vercel
 .netlify
 .playwright-mcp
-prisma/*.db
 supabase/.temp
 
-# Design source artwork — not used at runtime (only public/ is served).
-# This folder holds large print-format exports (.tif/.wmf/.emf/.pct).
+# Large print-format design exports, not served at runtime
 Logo
 hero-atom.png
-
-tsconfig.tsbuildinfo
