@@ -57,3 +57,5 @@ Thumbs.db
 # Design/review artefacts that are not part of the app.
 hero-atom.png
 Logo/ export clutter - source design artwork, not used by the app. Only public/logo assets are served.
+.vercel
+.env*

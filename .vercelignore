@@ -1,0 +1,29 @@
+# Keep local build caches, dependencies and secrets out of the upload.
+# Vercel builds from source, so none of these should be sent.
+
+node_modules
+.next
+out
+build
+coverage
+
+# Secrets — production values are set as Vercel Environment Variables.
+.env
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+
+# Local tooling / scratch
+.vercel
+.netlify
+.playwright-mcp
+prisma/*.db
+supabase/.temp
+
+# Design source artwork — not used at runtime (only public/ is served).
+# This folder holds large print-format exports (.tif/.wmf/.emf/.pct).
+Logo
+hero-atom.png
+
+tsconfig.tsbuildinfo
