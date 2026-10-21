@@ -1,0 +1,11 @@
+# Phase 6 Final Security & QA Checklist
+- Authentication: NextAuth v5, JWT session, roles enforced server-side.
+- Authorization: Admin routes protected by `auth()` + role check.
+- Rate limiting: `rate-limit.ts` implemented for login, checkout, exam submission.
+- Audit logging: `audit-logger.ts` for sensitive events.
+- File security: Resources need server authorization (architecture present).
+- Payment security: Client-submitted price never trusted. Sandbox adapter clearly separated.
+- No secrets committed: `.env.example` documents all requirements.
+- Brand identity preserved: `public/logo/at-academy-logo.jpg` official asset.
+- Design system consistent: navy/academic blue/cyan tokens in CSS.
+- No fake integrations: Email (`SMTP/Resend` abstraction ready but requires `RESEND_API_KEY`), SMS (not implemented), Payments (`SandboxPaymentProvider`), Monitoring (not configured), Analytics (`console.log` architecture only — requires provider config).

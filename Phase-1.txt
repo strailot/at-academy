@@ -1,0 +1,1170 @@
+# AT ACADEMY — PRODUCTION-GRADE EDTECH PLATFORM
+## MASTER BUILD PROMPT — PHASE 1
+## BRAND-ALIGNED IMPLEMENTATION
+
+You are the lead software architect, senior full-stack engineer, UI/UX designer, security engineer, and DevOps engineer responsible for building a production-ready EdTech platform for AT Academy.
+
+This is NOT a simple coaching-center website.
+
+The final product should become a complete Learning Management System (LMS) for SSC/HSC students with:
+
+- Public academy website
+- Course catalog
+- Student accounts
+- Live classes
+- Recorded courses
+- Exams & question bank
+- Chemistry-specific learning tools
+- Payments & enrollment
+- Student dashboard
+- Doubt solving
+- Notifications
+- Admin dashboard
+- Analytics
+- Marketing tools
+- Security & privacy
+- Production-grade infrastructure
+
+Build the system with a clean architecture so future features can be added without rewriting the application.
+
+---
+
+# 1. FIRST: INSPECT THE EXISTING PROJECT
+
+Before changing anything:
+
+1. Inspect the entire repository.
+2. Understand the current framework and architecture.
+3. Inspect package.json and installed dependencies.
+4. Inspect existing routes.
+5. Inspect existing components.
+6. Inspect database/schema if present.
+7. Inspect environment variables and configuration.
+8. Inspect authentication implementation if present.
+9. Inspect existing UI/design system.
+10. Identify what is already implemented and what is missing.
+
+DO NOT unnecessarily rewrite working code.
+
+If the repository already contains useful functionality, preserve and improve it.
+
+Create a concise internal implementation plan before coding.
+
+---
+
+# 2. AT ACADEMY BRAND IDENTITY — MANDATORY
+
+The official AT Academy logo is located at:
+
+G:\My Workplace\Websites\AT ACADEMY\Logo\330x330px.jpg
+
+IMPORTANT:
+
+- Use this exact logo as the official AT Academy brand mark.
+- Do NOT replace it with a generated logo.
+- Do NOT redesign the logo.
+- Do NOT distort, stretch, rotate, recolor, or crop the logo incorrectly.
+- Preserve its proportions.
+- Use appropriate transparent/clean presentation techniques where technically possible.
+- If the source JPG has a white background, handle the presentation carefully so it looks intentional.
+- Use the logo consistently across the website, authentication pages, dashboard and relevant application areas.
+- Use an appropriate favicon/app icon derived from the official brand asset only if technically appropriate.
+
+The logo visually communicates:
+
+- Chemistry
+- Science
+- Education
+- Academic learning
+- AT Academy identity
+- Modern blue/cyan visual language
+
+The logo contains a strong combination of:
+
+- Deep navy blue
+- Academic blue
+- Bright cyan
+- Light cyan
+- White
+
+Use the logo as the primary visual reference for the entire design system.
+
+Do NOT invent a completely unrelated color palette.
+
+The UI should feel visually connected to the logo.
+
+Suggested visual direction:
+
+- Deep navy / dark blue for strong headings and important UI
+- Academic blue for primary actions
+- Cyan / bright cyan for highlights and interactive accents
+- White / very light neutral surfaces
+- Soft blue-tinted backgrounds where appropriate
+
+Do not blindly hardcode colors everywhere.
+
+Create reusable design tokens / CSS variables so the brand palette can be adjusted globally later.
+
+The final visual identity should feel:
+
+- Scientific
+- Academic
+- Modern
+- Premium
+- Trustworthy
+- Energetic
+- Student-friendly
+
+Avoid making it look like:
+
+- A generic coaching template
+- A banking dashboard
+- A corporate SaaS admin template
+- A children's cartoon website
+- An overly flashy gaming website
+
+The chemistry identity should be subtle and premium.
+
+Use scientific visual motifs only where they improve the experience, such as:
+
+- Molecular structures
+- Subtle scientific patterns
+- Equation-inspired decorative elements
+- Chemistry-inspired icons
+- Abstract atom/molecule visuals
+- Clean laboratory/science-inspired geometry
+
+Do NOT overuse chemistry graphics.
+
+The logo must remain the primary brand identity.
+
+---
+
+# 3. CORE PRODUCT PRINCIPLE
+
+AT Academy should feel like a serious modern education platform, not a generic template.
+
+Design goals:
+
+- Premium
+- Modern
+- Trustworthy
+- Academic
+- Fast
+- Mobile-first
+- Student-friendly
+- Bangladesh-focused initially
+- Scalable internationally later
+
+Avoid:
+
+- Generic template appearance
+- Excessive gradients
+- Cheap-looking cards
+- Unnecessary animations
+- Fake statistics
+- Fake testimonials
+- Fake teacher qualifications
+- Fake course information
+- Fake payment success
+- Hardcoded production data where a database should be used
+
+Use realistic placeholders only where actual academy content has not yet been provided.
+
+---
+
+# 4. DESIGN SYSTEM
+
+Create a consistent design system.
+
+Requirements:
+
+- Responsive mobile-first layout
+- Desktop/tablet/mobile breakpoints
+- Consistent spacing system
+- Typography hierarchy
+- Reusable buttons
+- Cards
+- Inputs
+- Modals
+- Dialogs
+- Tabs
+- Dropdowns
+- Tables
+- Badges
+- Toasts
+- Empty states
+- Loading states
+- Skeleton states
+- Error states
+- Confirmation dialogs
+
+Use a professional component system such as:
+
+- shadcn/ui
+- Radix primitives
+- Tailwind CSS
+
+Use high-quality modern UI patterns where appropriate.
+
+Animations should be subtle and purposeful.
+
+Use motion only where it improves UX.
+
+Brand-aware visual effects are encouraged, but do not sacrifice performance.
+
+---
+
+# 5. PUBLIC WEBSITE
+
+Implement the public-facing academy website.
+
+## Homepage
+
+Create:
+
+### Header
+
+- AT Academy logo
+- Home
+- Courses
+- Live Classes
+- About
+- Teachers
+- Results/Reviews
+- Contact
+- Login
+- Register
+- Mobile navigation
+
+Header should remain clean and responsive.
+
+Use the official AT Academy logo from:
+
+G:\My Workplace\Websites\AT ACADEMY\Logo\330x330px.jpg
+
+The logo should be visually prominent but not oversized.
+
+---
+
+## Hero Section
+
+Include:
+
+- Strong education-focused headline
+- Supporting description
+- Primary CTA: Explore Courses
+- Secondary CTA: Free Demo
+- Trust-oriented visual
+- Upcoming batch information if available
+
+The hero should use the AT Academy brand palette.
+
+Consider subtle chemistry/science-inspired visual elements in the hero, but keep them elegant.
+
+Do NOT create fake academic claims.
+
+Do NOT invent claims such as "Bangladesh's #1 academy".
+
+---
+
+## Course Showcase
+
+Show:
+
+- Live courses
+- Recorded courses
+- Featured courses
+- Course thumbnail
+- Course title
+- Instructor
+- Category
+- Price
+- Duration
+- Number of lessons
+- Live/Recorded badge
+
+CTA:
+
+"View Course"
+
+Course cards should follow the AT Academy visual identity.
+
+---
+
+## Why AT Academy
+
+Create a section highlighting:
+
+- Structured learning
+- Expert teaching
+- Practice & exams
+- Live support
+- Progress tracking
+- Exam preparation
+
+Keep copy editable.
+
+---
+
+## Teacher Section
+
+Display:
+
+- Teacher photo
+- Name
+- Subject
+- Qualification
+- Experience
+- Short biography
+
+Use CMS/database-ready structure.
+
+Do NOT fabricate qualifications or experience.
+
+---
+
+## Student Testimonials
+
+Create testimonial components.
+
+Fields:
+
+- Student name
+- Class
+- Review
+- Photo optional
+- Course
+
+Do NOT fabricate testimonials.
+
+Use placeholder state until real testimonials are entered.
+
+---
+
+## Upcoming Batches
+
+Display:
+
+- Batch name
+- Course
+- Start date
+- Class schedule
+- Seats/status
+- Enrollment CTA
+
+---
+
+## Exam Announcement
+
+Create announcement cards for:
+
+- Model tests
+- Chapter tests
+- Mock exams
+- Results
+
+---
+
+## FAQ
+
+Create expandable FAQ components.
+
+Questions and answers must be manageable from admin later.
+
+---
+
+## Contact
+
+Include:
+
+- Phone
+- Email
+- Address
+- Social links
+- Contact form
+
+Contact information should be configurable.
+
+---
+
+## Footer
+
+Include:
+
+- Academy information
+- Navigation
+- Courses
+- Support
+- Policies
+- Social links
+- Copyright
+
+Use the official AT Academy brand identity consistently.
+
+---
+
+# 6. COURSE CATALOG
+
+Create:
+
+`/courses`
+
+Features:
+
+- Course listing
+- Search
+- Category filtering
+- Class filtering
+- Subject filtering
+- Batch filtering
+- Live/Recorded filtering
+- Price sorting
+- Featured courses
+
+Each course card should show:
+
+- Thumbnail
+- Title
+- Instructor
+- Course type
+- Price
+- Duration
+- Lesson count
+- Rating if available
+- Enrollment CTA
+
+---
+
+# 7. COURSE DETAILS
+
+Create dynamic course detail pages.
+
+Example:
+
+`/courses/[slug]`
+
+Sections:
+
+- Course hero
+- Instructor
+- Course description
+- Learning outcomes
+- Syllabus
+- Chapters
+- Lesson count
+- Course duration
+- Live/Recorded status
+- Batch information
+- Demo lesson
+- Pricing
+- FAQ
+- Enrollment CTA
+
+Do not expose protected course content publicly.
+
+---
+
+# 8. ABOUT & TRUST
+
+Create:
+
+`/about`
+
+Sections:
+
+- About AT Academy
+- Mission
+- Teaching philosophy
+- Methodology
+- Teacher profiles
+- Academic approach
+- Contact information
+
+Also create policy pages:
+
+- `/privacy`
+- `/terms`
+- `/refund-policy`
+
+These should be structured so they can later be managed from CMS.
+
+---
+
+# 9. AUTHENTICATION ARCHITECTURE
+
+Prepare the application for:
+
+- Student
+- Teacher
+- Admin
+- Moderator
+- Support staff
+
+Authentication must support:
+
+- Email/password
+- Phone verification architecture
+- Password reset
+- Session management
+- Logout
+- Logout from all devices
+- Secure password change
+
+Never store plaintext passwords.
+
+Use secure server-side authentication.
+
+Protect private routes with middleware/server-side authorization.
+
+---
+
+# 10. STUDENT PROFILE
+
+Prepare student profile fields:
+
+- Name
+- Profile photo
+- Email
+- Phone
+- Class
+- School
+- Enrollment information
+- Account status
+
+Student should eventually be able to:
+
+- Edit profile
+- Change password
+- Logout
+- Logout all sessions
+- Request account deletion
+
+---
+
+# 11. STUDENT DASHBOARD FOUNDATION
+
+Create:
+
+`/dashboard`
+
+Initial dashboard layout:
+
+### Overview
+
+- Continue Learning
+- My Courses
+- Upcoming Classes
+- Upcoming Exams
+- Recent Results
+- Announcements
+
+### Progress
+
+- Course completion
+- Study activity
+- Weak topics placeholder
+- Performance summary
+
+### Quick Actions
+
+- Continue course
+- Join upcoming class
+- Submit homework
+- Ask a doubt
+- Take exam
+
+For now, connect to real database structures where available and use empty states where data does not exist.
+
+The dashboard must use the same AT Academy branding and visual language.
+
+---
+
+# 12. DATABASE ARCHITECTURE
+
+If a database is already configured, inspect and extend it.
+
+If not, create a scalable relational schema.
+
+Minimum conceptual entities:
+
+- users
+- profiles
+- roles
+- courses
+- course_categories
+- instructors
+- instructor_profiles
+- batches
+- enrollments
+- chapters
+- lessons
+- lesson_progress
+- videos
+- live_classes
+- attendance
+- homework
+- submissions
+- exams
+- questions
+- question_options
+- exam_attempts
+- exam_answers
+- payments
+- orders
+- invoices
+- coupons
+- notifications
+- announcements
+- testimonials
+- faqs
+- support_tickets
+- doubts
+- policies
+- audit_logs
+
+Do NOT create unnecessary complexity if the current project already has an equivalent architecture.
+
+Use proper:
+
+- Foreign keys
+- Indexes
+- Constraints
+- Timestamps
+- Status fields
+- Soft deletion where appropriate
+
+---
+
+# 13. SECURITY REQUIREMENTS
+
+Security is mandatory.
+
+Implement architecture for:
+
+- Server-side authorization
+- Role-based access control
+- Input validation
+- Rate limiting
+- Secure sessions
+- CSRF protection where applicable
+- XSS protection
+- SQL injection prevention
+- Secure file access
+- Payment verification
+- Audit logging
+- Error handling
+- Abuse prevention
+
+Never trust client-side authorization.
+
+A student must never be able to access:
+
+- Admin routes
+- Other students' private information
+- Private videos
+- Other users' payments
+- Internal admin APIs
+
+---
+
+# 14. VIDEO ARCHITECTURE
+
+Do NOT build custom video streaming infrastructure in Phase 1.
+
+Design an abstraction that can later support:
+
+- YouTube unlisted/private where appropriate
+- Vimeo
+- Cloud storage/CDN
+- Signed playback URLs
+- Protected playback
+
+The lesson model should support:
+
+- video URL/provider
+- duration
+- thumbnail
+- captions
+- transcript
+- access permissions
+- downloadable resources
+- expiry
+
+Never assume hiding a download button provides DRM.
+
+---
+
+# 15. LIVE CLASS ARCHITECTURE
+
+Do NOT build custom video conferencing.
+
+Create a live class model supporting:
+
+- Google Meet
+- Zoom
+- Other providers later
+
+Each class should support:
+
+- Batch
+- Teacher
+- Start time
+- End time
+- Meeting URL
+- Reminder
+- Attendance
+- Recording availability
+- Notes
+- Status
+
+Meeting URLs must not be publicly exposed before authorization.
+
+---
+
+# 16. PAYMENT ARCHITECTURE
+
+Prepare payment abstraction.
+
+Do NOT hardcode a single payment provider into business logic.
+
+Create a provider interface that can later support:
+
+- bKash
+- Nagad
+- Card gateway
+- Other payment providers
+
+Payment flow:
+
+Course → Checkout → Payment → Server verification → Order → Enrollment
+
+Never activate enrollment solely from client-side success.
+
+Store:
+
+- Order ID
+- Transaction ID
+- User
+- Course
+- Amount
+- Currency
+- Provider
+- Status
+- Timestamp
+- Verification status
+
+Protect against duplicate transactions.
+
+---
+
+# 17. CHEMISTRY COURSE FOUNDATION
+
+Create the content architecture necessary for AT Academy's SSC Chemistry course.
+
+Support:
+
+- Chapter
+- Topic
+- Lesson
+- Formula
+- Chemical equation
+- Definition
+- Note
+- Flashcard
+- Practice question
+
+Future tools should include:
+
+- Equation balancing practice
+- Periodic table explorer
+- Valency practice
+- Atomic structure practice
+- Formula library
+- Numerical problem solving
+- MCQ drills
+- CQ answer structure
+- Practical preparation
+- Common mistakes
+- Revision flashcards
+
+Do not implement every advanced Chemistry tool in this phase.
+
+Build the architecture so they can be added cleanly later.
+
+Chemistry-related UI should visually connect with the AT Academy logo's scientific identity.
+
+---
+
+# 18. SEO
+
+Implement technical SEO foundation.
+
+Include:
+
+- Metadata
+- Open Graph
+- Twitter/social preview
+- Canonical URLs
+- Sitemap
+- Robots
+- Semantic HTML
+- Structured data where appropriate
+- Course schema where appropriate
+- Organization schema where appropriate
+- SEO-friendly slugs
+
+Course pages must be indexable when public.
+
+Private student content must not be indexed.
+
+---
+
+# 19. PERFORMANCE
+
+Optimize for:
+
+- Fast initial load
+- Image optimization
+- Lazy loading
+- Code splitting
+- Minimal client-side JavaScript
+- Server-side rendering where appropriate
+- CDN-friendly assets
+- Database indexing
+- Efficient queries
+
+Avoid unnecessary dependencies.
+
+Do not add heavy 3D/WebGL just for visual decoration.
+
+If visual effects are used, ensure they are progressively enhanced and do not harm mobile performance.
+
+---
+
+# 20. RESPONSIVE EXPERIENCE
+
+The website must work properly on:
+
+- Mobile phones
+- Tablets
+- Laptops
+- Desktop monitors
+
+Prioritize mobile because a large percentage of Bangladeshi students will access the platform through smartphones.
+
+Test navigation, forms, course pages and dashboard on small screens.
+
+The AT Academy logo must remain properly scaled on all screen sizes.
+
+---
+
+# 21. ACCESSIBILITY
+
+Implement:
+
+- Keyboard navigation
+- Focus states
+- Semantic elements
+- Accessible forms
+- Labels
+- Alt text
+- Proper contrast
+- Screen-reader-friendly buttons
+- Reduced motion support where appropriate
+
+---
+
+# 22. ERROR & EMPTY STATES
+
+Every major page should have proper:
+
+- Loading state
+- Empty state
+- Error state
+- Retry action
+
+Examples:
+
+"No courses found"
+
+"No upcoming classes"
+
+"No exam attempts yet"
+
+"No notifications"
+
+Do not leave blank screens.
+
+---
+
+# 23. ENVIRONMENT CONFIGURATION
+
+Separate:
+
+- Development
+- Staging
+- Production
+
+Never commit secrets.
+
+Use environment variables for:
+
+- Database
+- Authentication
+- Payment credentials
+- Email provider
+- Video provider
+- Analytics
+- Storage
+- External integrations
+
+Create/update `.env.example`.
+
+---
+
+# 24. TESTING
+
+Add a testing strategy.
+
+At minimum prepare tests for:
+
+- Authentication
+- Authorization
+- Course access
+- Enrollment
+- Payment verification logic
+- Protected routes
+- Student dashboard
+- Critical API/server actions
+
+Run:
+
+- Type checking
+- Lint
+- Build
+- Tests
+
+Fix all critical errors before finishing.
+
+---
+
+# 25. ADMIN ARCHITECTURE
+
+Do NOT build every admin feature in this first phase.
+
+However, create the foundation for:
+
+`/admin`
+
+Sidebar structure:
+
+- Overview
+- Courses
+- Batches
+- Students
+- Teachers
+- Lessons
+- Live Classes
+- Exams
+- Question Bank
+- Payments
+- Orders
+- Coupons
+- Notifications
+- Announcements
+- Testimonials
+- FAQs
+- Support
+- Analytics
+- Settings
+- Audit Logs
+
+Use role-based access.
+
+---
+
+# 26. CODE QUALITY
+
+Requirements:
+
+- TypeScript
+- Strong typing
+- Reusable components
+- Reusable server utilities
+- Clear folder structure
+- No unnecessary duplication
+- No giant monolithic components
+- No hardcoded secrets
+- No dead code
+- No console spam
+- Clear naming
+- Maintainable architecture
+
+---
+
+# 27. IMPORTANT PRODUCT RULE
+
+Do not attempt to implement all 14 feature categories in one giant coding pass.
+
+This project will be developed in phases.
+
+PHASE 1 should establish:
+
+1. Architecture
+2. Design system
+3. Database foundation
+4. Authentication foundation
+5. Public website
+6. Course catalog
+7. Course detail pages
+8. About/trust pages
+9. Student dashboard foundation
+10. Security foundation
+11. SEO foundation
+12. Testing/build foundation
+
+Future phases will implement:
+
+PHASE 2:
+Student accounts + enrollment + payment
+
+PHASE 3:
+Live classes + recorded learning
+
+PHASE 4:
+Exam engine + Chemistry tools
+
+PHASE 5:
+Admin dashboard + CMS + analytics
+
+PHASE 6:
+Notifications + marketing + advanced security + production optimization
+
+---
+
+# 28. IMPORTANT IMPLEMENTATION BEHAVIOR
+
+Before coding, inspect the repository.
+
+Then:
+
+1. Give a short implementation plan.
+2. Identify existing functionality.
+3. Identify conflicts.
+4. Implement Phase 1.
+5. Run lint/typecheck/tests/build.
+6. Fix errors.
+7. Review responsive behavior.
+8. Review authentication/security boundaries.
+9. Review brand consistency against the official AT Academy logo.
+10. Verify the official logo is being used correctly.
+11. Provide a final execution report.
+
+Do not stop after merely creating UI mockups.
+
+The implementation must be functional and connected to the actual application architecture.
+
+If something cannot be fully implemented because credentials or external provider configuration are missing, create the correct integration abstraction and clearly document the missing environment variables/configuration.
+
+Do not fake successful integrations.
+
+---
+
+# 29. BRAND QUALITY CHECK — MUST PASS BEFORE COMPLETION
+
+Before declaring Phase 1 complete, visually inspect the application and verify:
+
+### Logo
+
+- Official AT Academy logo is used.
+- Correct aspect ratio.
+- No distortion.
+- Appropriate sizing.
+- Good visibility on light/dark surfaces.
+- Correct favicon/app icon strategy where applicable.
+
+### Colors
+
+The interface visually belongs to the same brand family as the logo.
+
+Use the logo's blue/cyan/navy identity as the primary visual reference.
+
+### Typography
+
+Typography must feel:
+
+- Modern
+- Academic
+- Clean
+- Highly readable
+
+### Components
+
+Buttons, cards, navigation, forms and dashboard components must share one coherent design language.
+
+### Mobile
+
+Verify that the brand identity remains strong on mobile.
+
+### Overall
+
+The site should immediately feel like:
+
+"AT Academy"
+
+rather than:
+
+"Generic coaching website."
+
+---
+
+# 30. FINAL QUALITY BAR
+
+The final result should feel like:
+
+A serious modern EdTech SaaS/LMS platform — not a coaching center template.
+
+The public website should establish trust.
+
+The student dashboard should feel like a real learning product.
+
+The architecture should be ready for thousands of students.
+
+The system should be secure enough to continue toward production.
+
+The AT Academy logo and chemistry/science identity should be consistently reflected throughout the experience without overusing decorative chemistry elements.
+
+Prioritize correctness, maintainability, UX, security and scalability over simply producing a large number of screens.
+
+---
+
+# START NOW
+
+START BY INSPECTING THE EXISTING PROJECT.
+
+Then inspect and use the official AT Academy logo located at:
+
+G:\My Workplace\Websites\AT ACADEMY\Logo\330x330px.jpg
+
+DO NOT ASK ME TO REPEAT THE FEATURE LIST.
+
+DO NOT REMOVE OR SKIP ANY REQUIREMENT FROM THIS PROMPT.
+
+EXECUTE PHASE 1.
+
+After implementation, run the required checks and provide a detailed execution report including:
+
+- Files created
+- Files modified
+- Features completed
+- Database/schema changes
+- Authentication changes
+- Routes created
+- Components created
+- Dependencies added
+- Environment variables required
+- Tests performed
+- Build result
+- Remaining Phase 2 work
+- Any blockers or external credentials required

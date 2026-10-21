@@ -1,0 +1,3 @@
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+export default function AdminAnalyticsPage() { return <div className="min-h-screen bg-background"><Header /><main className="mx-auto max-w-7xl px-6 py-12"><h1 className="font-display text-3xl font-bold text-navy-900">Analytics</h1><div className="mt-6 rounded-2xl bg-card border p-6">Revenue, enrollment, exam performance, student engagement reports.</div></main><Footer /></div>; }

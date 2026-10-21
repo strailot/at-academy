@@ -1,0 +1,583 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  name          String
+  role          Role     @default(STUDENT)
+  image         String?
+  emailVerified DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  password      String?
+  profiles         Profile[] @relation("ProfileUser")
+  coursesAsInstructor Course[] @relation("CourseInstructor")
+  batchesAsTeacher  Batch[] @relation("BatchTeacher")
+  doubtsAnswered    Doubt[] @relation("DoubtAnsweredBy")
+  ticketsAssigned   SupportTicket[] @relation("TicketAssignedTo")
+  enrollments      Enrollment[] @relation("EnrollmentUser")
+  orders           Order[]
+  payments         Payment[]
+  notifications    Notification[]
+  doubts           Doubt[] @relation("DoubtStudent")
+  supportTickets   SupportTicket[]
+  auditLogs        AuditLog[]
+  lessonProgress   LessonProgress[] @relation("LessonProgressUser")
+  liveClasses      LiveClass[] @relation("LiveClassTeacher")
+  attendances      Attendance[] @relation("AttendanceUser")
+  examAttempts     ExamAttempt[] @relation("ExamAttemptUser")
+  announcements    Announcement[] @relation("AnnouncementAuthor")
+  testimonials     Testimonial[] @relation("TestimonialUser")
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+  ADMIN
+  MODERATOR
+  SUPPORT
+}
+
+model Profile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation("ProfileUser", fields: [userId], references: [id])
+  class     String?
+  school    String?
+  phone     String?
+  bio       String?
+  address   String?
+  dob       DateTime?
+  gender    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Course {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  description String?
+  thumbnail   String?
+  price       Int
+  duration    String // e.g., "3 months"
+  level       String   // SSC, HSC, etc.
+  subject     String   // Chemistry, Physics, etc.
+  type        CourseType
+  status      CourseStatus @default(DRAFT)
+  instructorId String
+  instructor  User     @relation("CourseInstructor", fields: [instructorId], references: [id])
+  categoryId  String?
+  category    Category?  @relation("CourseCategory", fields: [categoryId], references: [id])
+  batches     Batch[]
+  chapters    Chapter[]
+  lessons     Lesson[]  @relation("CourseLessons")
+  enrollments Enrollment[]
+  exams       Exam[] @relation("ExamCourses")
+  orders      Order[] @relation("OrderCourse")
+  doubts      Doubt[] @relation("DoubtCourse")
+  faqs        FAQ[]
+  testimonials Testimonial[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum CourseType {
+  LIVE
+  RECORDED
+  HYBRID
+}
+
+enum CourseStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  slug      String   @unique
+  icon      String?
+  color     String?
+  courses   Course[] @relation("CourseCategory")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Batch {
+  id          String   @id @default(uuid())
+  name        String
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id])
+  startDate   DateTime
+  endDate     DateTime?
+  schedule    Json     // { days: ["Mon", "Wed"], time: "18:00-20:00" }
+  seatsTotal  Int
+  seatsFilled Int      @default(0)
+  status      BatchStatus @default(UPCOMING)
+  teacherId   String
+  teacher     User     @relation("BatchTeacher", fields: [teacherId], references: [id])
+  liveClasses LiveClass[]
+  enrollments Enrollment[]
+  exams       Exam[] @relation("BatchExams")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum BatchStatus {
+  UPCOMING
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
+model Chapter {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id])
+  position    Int
+  lessons     Lesson[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Lesson {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  videoUrl    String?
+  duration    Int      // in seconds
+  chapterId   String
+  chapter     Chapter  @relation(fields: [chapterId], references: [id])
+  courseId    String?
+  course      Course?  @relation("CourseLessons", fields: [courseId], references: [id])
+  position    Int
+  isPreview   Boolean  @default(false)
+  resources   Resource[]
+  progress    LessonProgress[]
+  doubts      Doubt[] @relation("DoubtLesson")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Resource {
+  id        String   @id @default(uuid())
+  title     String
+  url       String
+  type      String   // pdf, ppt, doc, etc.
+  lessonId  String
+  lesson    Lesson   @relation(fields: [lessonId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model LessonProgress {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation("LessonProgressUser", fields: [userId], references: [id])
+  lessonId  String
+  lesson    Lesson   @relation(fields: [lessonId], references: [id])
+  completed Boolean  @default(false)
+  watchedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, lessonId])
+}
+
+model LiveClass {
+  id          String   @id @default(uuid())
+  title       String
+  batchId     String
+  batch       Batch    @relation(fields: [batchId], references: [id])
+  teacherId   String
+  teacher     User     @relation("LiveClassTeacher", fields: [teacherId], references: [id])
+  startTime   DateTime
+  endTime     DateTime
+  meetingUrl  String
+  provider    String   // google_meet, zoom, etc.
+  status      LiveClassStatus @default(SCHEDULED)
+  recordingUrl String?
+  notes       String?
+  attendance  Attendance[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum LiveClassStatus {
+  SCHEDULED
+  LIVE
+  ENDED
+  CANCELLED
+}
+
+model Attendance {
+  id        String   @id @default(uuid())
+  liveClassId String
+  liveClass LiveClass @relation(fields: [liveClassId], references: [id])
+  userId    String
+  user      User     @relation("AttendanceUser", fields: [userId], references: [id])
+  attended  Boolean  @default(false)
+  joinedAt  DateTime?
+  leftAt    DateTime?
+  createdAt DateTime @default(now())
+}
+
+model Enrollment {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation("EnrollmentUser", fields: [userId], references: [id])
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id])
+  batchId   String?
+  batch     Batch?   @relation(fields: [batchId], references: [id])
+  status    EnrollmentStatus @default(PENDING)
+  amountPaid Int
+  enrolledAt DateTime @default(now())
+  completedAt DateTime?
+  orderId   String?
+  order     Order?   @relation("EnrollmentOrder", fields: [orderId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, courseId])
+}
+
+enum EnrollmentStatus {
+  PENDING
+  ACTIVE
+  COMPLETED
+  REFUNDED
+  CANCELLED
+}
+
+model Exam {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  courseId    String?
+  course      Course?  @relation("ExamCourses", fields: [courseId], references: [id])
+  batchId     String?
+  batch       Batch?   @relation("BatchExams", fields: [batchId], references: [id])
+  startTime   DateTime
+  endTime     DateTime
+  duration    Int      // in minutes
+  totalMarks  Int
+  passingMarks Int
+  status      ExamStatus @default(SCHEDULED)
+  questions   Question[]
+  attempts    ExamAttempt[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum ExamStatus {
+  SCHEDULED
+  LIVE
+  ENDED
+  RESULTS_PUBLISHED
+}
+
+model Question {
+  id          String   @id @default(uuid())
+  examId      String
+  exam        Exam     @relation(fields: [examId], references: [id])
+  type        QuestionType // MCQ, CQ, NUMERICAL
+  marks       Int
+  question    String
+  options     QuestionOption[] // for MCQ
+  correctAnswer String
+  explanation String?
+  answers    ExamAnswer[] @relation("ExamAnswers")
+  createdAt   DateTime @default(now())
+}
+
+enum QuestionType {
+  MCQ
+  CQ
+  NUMERICAL
+  FILL_IN_THE_BLANK
+}
+
+model QuestionOption {
+  id        String   @id @default(uuid())
+  questionId String
+  question  Question @relation(fields: [questionId], references: [id])
+  label     String   // A, B, C, D
+  text      String
+  isCorrect Boolean  @default(false)
+}
+
+model ExamAttempt {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation("ExamAttemptUser", fields: [userId], references: [id])
+  examId    String
+  exam      Exam     @relation(fields: [examId], references: [id])
+  score     Int
+  startedAt DateTime
+  endedAt   DateTime?
+  answers   ExamAnswer[]
+  createdAt DateTime @default(now())
+}
+
+model ExamAnswer {
+  id        String   @id @default(uuid())
+  attemptId String
+  attempt   ExamAttempt @relation(fields: [attemptId], references: [id])
+  questionId String
+  question  Question   @relation("ExamAnswers", fields: [questionId], references: [id])
+  answer    String     // for MCQ: option label, for NUMERICAL: number, for CQ: text
+  marksObtained Int
+  createdAt DateTime @default(now())
+}
+
+model Payment {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  orderId     String
+  order       Order    @relation("PaymentOrder", fields: [orderId], references: [id])
+  amount      Int
+  currency    String   @default("BDT")
+  provider    PaymentProvider
+  transactionId String
+  status      PaymentStatus @default(PENDING)
+  paidAt      DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum PaymentProvider {
+  BKASH
+  NAGAD
+  ROCKET
+  CARD
+  BANK_TRANSFER
+  OTHER
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+model Order {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  courseId    String?
+  course      Course?  @relation("OrderCourse", fields: [courseId], references: [id])
+  amount      Int
+  currency    String   @default("BDT")
+  status      OrderStatus @default(PENDING)
+  items       Json     // [{ courseId, title, price }]
+  payments    Payment[] @relation("PaymentOrder")
+  enrollments Enrollment[] @relation("EnrollmentOrder")
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+model Coupon {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  description String?
+  discountType CouponDiscountType
+  value       Int      // percentage or fixed amount
+  minAmount   Int?
+  usageLimit  Int?
+  usedCount   Int      @default(0)
+  validFrom   DateTime
+  validUntil  DateTime?
+  status      CouponStatus @default(ACTIVE)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum CouponDiscountType {
+  PERCENTAGE
+  FIXED
+}
+
+enum CouponStatus {
+  ACTIVE
+  EXPIRED
+  USED_UP
+  INACTIVE
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  message   String
+  type      NotificationType
+  read      Boolean  @default(false)
+  url       String?
+  createdAt DateTime @default(now())
+}
+
+enum NotificationType {
+  ENROLLMENT
+  PAYMENT
+  LIVE_CLASS_START
+  EXAM_SCHEDULE
+  EXAM_RESULT
+  DOUBT_REPLY
+  ANNOUNCEMENT
+  SYSTEM
+}
+
+model Announcement {
+  id          String   @id @default(uuid())
+  title       String
+  content     String
+  authorId    String
+  author      User     @relation("AnnouncementAuthor", fields: [authorId], references: [id])
+  priority    AnnouncementPriority @default(NORMAL)
+  expiresAt   DateTime?
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum AnnouncementPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+model Testimonial {
+  id        String   @id @default(uuid())
+  name      String
+  class     String?
+  school    String?
+  review    String
+  rating    Int      // 1-5
+  photoUrl  String?
+  courseId  String?
+  course    Course?  @relation(fields: [courseId], references: [id])
+  userId    String?
+  user      User?    @relation("TestimonialUser", fields: [userId], references: [id])
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model FAQ {
+  id        String   @id @default(uuid())
+  question  String
+  answer    String
+  category  String?
+  courseId  String?
+  course    Course?  @relation(fields: [courseId], references: [id])
+  position  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Doubt {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation("DoubtStudent", fields: [userId], references: [id])
+  courseId  String?
+  course    Course?  @relation("DoubtCourse", fields: [courseId], references: [id])
+  lessonId  String?
+  lesson    Lesson?  @relation("DoubtLesson", fields: [lessonId], references: [id])
+  question  String
+  answer    String?
+  answeredBy String?
+  answeredByUser User? @relation("DoubtAnsweredBy", fields: [answeredBy], references: [id])
+  status    DoubtStatus @default(OPEN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum DoubtStatus {
+  OPEN
+  ANSWERED
+  CLOSED
+}
+
+model SupportTicket {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  subject   String
+  description String
+  status    TicketStatus @default(OPEN)
+  priority  TicketPriority @default(MEDIUM)
+  assignedTo String?
+  assignedToUser User? @relation("TicketAssignedTo", fields: [assignedTo], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  closedAt  DateTime?
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+model Policy {
+  id        String   @id @default(uuid())
+  type      PolicyType
+  title     String
+  content   String
+  version   String   @default("1.0")
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum PolicyType {
+  PRIVACY
+  TERMS
+  REFUND
+  COOKIES
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  entity    String
+  entityId  String?
+  changes   Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+}

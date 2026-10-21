@@ -1,0 +1,1354 @@
+# AT ACADEMY — PRODUCTION-GRADE EDTECH PLATFORM
+## PHASE 2 — STUDENT ACCOUNTS + ENROLLMENT + CHECKOUT + PAYMENT
+## CONTINUE FROM COMPLETED PHASE 1
+
+You are continuing development of the AT Academy production-grade EdTech/LMS platform.
+
+IMPORTANT:
+
+Phase 1 has already been implemented.
+
+DO NOT rebuild Phase 1 from scratch.
+
+DO NOT replace working architecture unnecessarily.
+
+DO NOT remove existing features.
+
+First inspect the current repository and the actual Phase 1 implementation, then extend it cleanly.
+
+The official AT Academy brand identity, logo, design system, routes, components, database architecture and security foundations established in Phase 1 must remain intact.
+
+---
+
+# 1. FIRST — INSPECT PHASE 1
+
+Before writing code:
+
+1. Inspect the complete repository.
+2. Inspect all Phase 1 routes.
+3. Inspect the current database schema.
+4. Inspect authentication architecture.
+5. Inspect user/profile models.
+6. Inspect course models.
+7. Inspect batch models.
+8. Inspect existing UI components.
+9. Inspect middleware and authorization.
+10. Inspect environment variables.
+11. Inspect existing API/server actions.
+12. Inspect tests.
+13. Inspect package.json.
+14. Run the current application if possible.
+15. Verify the existing build before making changes.
+
+Then provide a SHORT implementation plan.
+
+Do not ask me to repeat the previous requirements.
+
+---
+
+# 2. PHASE 2 OBJECTIVE
+
+Implement the complete foundation for:
+
+- Student registration
+- Student login
+- Email verification architecture
+- Phone verification architecture
+- Password reset
+- Student profile
+- Session management
+- Logout
+- Logout all devices
+- Course enrollment
+- Checkout
+- Orders
+- Payments
+- Payment verification
+- Enrollment activation
+- Payment history
+- Digital receipts/invoices
+- Coupons
+- Discount handling
+- Failed payment handling
+- Manual payment verification architecture
+- Refund request architecture
+
+The result must be functional and production-oriented.
+
+---
+
+# 3. AUTHENTICATION
+
+Use the authentication architecture already established in Phase 1.
+
+Do not introduce a second authentication system.
+
+Support:
+
+## Registration
+
+Fields:
+
+- Full name
+- Email
+- Phone number
+- Password
+- Confirm password
+- Class
+- School
+
+Requirements:
+
+- Strong validation
+- Duplicate email prevention
+- Duplicate phone prevention where applicable
+- Secure password hashing
+- Proper error messages
+- Server-side validation
+
+After registration:
+
+- Create user
+- Create profile
+- Assign Student role
+- Start verification workflow
+
+Do NOT automatically mark an unverified account as fully verified.
+
+---
+
+# 4. LOGIN
+
+Create/complete:
+
+`/login`
+
+Support:
+
+- Email/phone + password where architecture allows
+- Remember session where appropriate
+- Error handling
+- Loading state
+- Invalid credentials handling
+- Account status handling
+- Verification state handling
+
+After successful login:
+
+- Redirect student to `/dashboard`
+- Preserve intended destination if user was trying to access a protected page
+
+Do not expose sensitive authentication errors.
+
+---
+
+# 5. REGISTRATION
+
+Create/complete:
+
+`/register`
+
+UX requirements:
+
+- Clean multi-field form
+- Mobile-friendly
+- Password strength indication
+- Validation
+- Terms acceptance
+- Privacy acknowledgement
+- Loading state
+- Success state
+- Error state
+
+Do not collect unnecessary personal information.
+
+---
+
+# 6. EMAIL VERIFICATION
+
+Implement architecture for:
+
+- Verification token
+- Expiry
+- Resend verification
+- Token invalidation
+- Already verified state
+
+Create:
+
+`/verify-email`
+
+Support:
+
+- Valid token
+- Expired token
+- Invalid token
+- Already verified
+- Resend verification
+
+Email provider must be configurable through environment variables.
+
+Do not fake email delivery.
+
+If credentials are unavailable:
+
+- Build the integration abstraction
+- Provide development-safe behavior
+- Clearly document required environment variables
+
+---
+
+# 7. PHONE VERIFICATION
+
+Prepare architecture for phone verification.
+
+Do NOT hardcode a specific SMS provider.
+
+Create provider abstraction supporting future:
+
+- OTP generation
+- OTP verification
+- Expiry
+- Rate limiting
+- Resend cooldown
+- Attempt limits
+
+Phone verification should be provider-ready.
+
+---
+
+# 8. PASSWORD RESET
+
+Create:
+
+`/forgot-password`
+
+and
+
+`/reset-password`
+
+Flow:
+
+Forgot password
+→ secure token
+→ email
+→ reset password
+→ invalidate token
+→ optionally invalidate old sessions
+
+Requirements:
+
+- Expiring reset token
+- Single-use token
+- Rate limiting
+- No account enumeration
+- Secure password update
+
+Never expose whether an email belongs to an account through unsafe error messages.
+
+---
+
+# 9. SESSION MANAGEMENT
+
+Implement proper session management.
+
+Student should be able to:
+
+- Logout current session
+- Logout all sessions
+
+Prepare architecture for viewing active sessions later.
+
+Session data should support:
+
+- Device/session identifier
+- Created time
+- Last active time
+- Revoked state
+
+Never expose sensitive session tokens.
+
+---
+
+# 10. STUDENT PROFILE
+
+Complete:
+
+`/account`
+
+Sections:
+
+### Personal Information
+
+- Name
+- Profile image
+- Email
+- Phone
+- Class
+- School
+
+### Security
+
+- Change password
+- Logout
+- Logout all devices
+
+### Account
+
+- Account status
+- Verification status
+- Account deletion request
+
+Profile updates must use server-side validation.
+
+Students must only be able to modify their own profile.
+
+---
+
+# 11. ACCOUNT DELETION
+
+Implement architecture for:
+
+"Request account deletion"
+
+Do NOT immediately destroy all data if financial, legal or academic records require retention.
+
+Use a deletion-request model/status.
+
+Support:
+
+- Request submitted
+- Pending review
+- Approved
+- Rejected
+- Completed
+
+Protect student data throughout the process.
+
+---
+
+# 12. COURSE ENROLLMENT MODEL
+
+Implement real enrollment architecture.
+
+A student can enroll in:
+
+- Live course
+- Recorded course
+- Batch-based course
+
+Enrollment should include:
+
+- Student
+- Course
+- Batch where applicable
+- Order
+- Payment
+- Start date
+- Expiry date
+- Status
+- Enrollment source
+- Created date
+
+Possible statuses:
+
+- pending
+- active
+- expired
+- cancelled
+- refunded
+- suspended
+
+Do not allow duplicate active enrollments unless explicitly supported by business rules.
+
+---
+
+# 13. COURSE ACCESS CONTROL
+
+This is critical.
+
+A student must only access protected course content if the student has valid enrollment.
+
+Create reusable authorization logic such as:
+
+`requireCourseAccess()`
+
+or equivalent.
+
+Check:
+
+- User authenticated?
+- Correct student?
+- Enrollment exists?
+- Enrollment active?
+- Course access expired?
+- Batch access valid?
+- Content access allowed?
+
+Never rely on frontend checks alone.
+
+---
+
+# 14. COURSE PURCHASE FLOW
+
+Implement:
+
+Course page
+→ Enroll / Buy Now
+→ Checkout
+→ Order creation
+→ Payment
+→ Server verification
+→ Enrollment activation
+→ Success page
+
+Do NOT activate enrollment merely because frontend payment UI says success.
+
+The server must verify payment status.
+
+---
+
+# 15. CHECKOUT PAGE
+
+Create:
+
+`/checkout/[courseId]`
+
+or equivalent architecture.
+
+Display:
+
+- Course
+- Course type
+- Instructor
+- Batch if applicable
+- Original price
+- Discount
+- Coupon
+- Final price
+- Payment method
+- Terms
+- Refund policy
+- Purchase confirmation
+
+Before payment:
+
+- Verify course exists
+- Verify course is purchasable
+- Verify batch availability
+- Verify current price server-side
+- Verify coupon server-side
+- Verify user account status
+
+Never trust client-submitted price.
+
+---
+
+# 16. ORDER SYSTEM
+
+Create proper order architecture.
+
+Order should contain:
+
+- Order ID
+- Student
+- Course
+- Batch
+- Original amount
+- Discount amount
+- Final amount
+- Currency
+- Coupon
+- Payment provider
+- Payment status
+- Order status
+- Created time
+- Updated time
+
+Use immutable transaction records where appropriate.
+
+Protect against duplicate order creation.
+
+---
+
+# 17. PAYMENT ABSTRACTION
+
+Do NOT tightly couple the entire application to one payment provider.
+
+Create a payment provider abstraction.
+
+The architecture should support:
+
+- bKash
+- Nagad
+- Card gateway
+- Future providers
+
+Conceptually:
+
+PaymentProvider
+→ createPayment()
+→ verifyPayment()
+→ refundPayment()
+→ getPaymentStatus()
+
+Use the provider implementation only through this abstraction.
+
+---
+
+# 18. BANGLADESH PAYMENT SUPPORT
+
+Prepare production architecture for:
+
+### bKash
+
+Support future merchant/API integration.
+
+### Nagad
+
+Support future merchant/API integration.
+
+### Card Gateway
+
+Support future card processor integration.
+
+IMPORTANT:
+
+Do not fake API credentials.
+
+Do not create fake payment confirmations.
+
+If credentials are missing:
+
+- Build the integration interfaces
+- Build sandbox/mock development adapters only if useful
+- Clearly separate development mode from production mode
+- Document required environment variables
+
+---
+
+# 19. PAYMENT VERIFICATION
+
+Server-side verification is mandatory.
+
+Payment flow:
+
+1. Create order
+2. Initiate payment
+3. Redirect/open provider
+4. Provider callback/webhook
+5. Verify payment with provider
+6. Validate amount
+7. Validate currency
+8. Validate transaction ID
+9. Validate order
+10. Prevent duplicate transaction
+11. Mark payment successful
+12. Create/activate enrollment
+13. Generate receipt
+14. Notify student
+
+Never trust only a browser redirect.
+
+---
+
+# 20. WEBHOOK / CALLBACK SECURITY
+
+Prepare secure webhook architecture.
+
+Requirements:
+
+- Signature verification where provider supports it
+- Idempotency
+- Duplicate event protection
+- Server-side verification
+- Event logging
+- Invalid event rejection
+- Replay protection where applicable
+
+Store provider event IDs when available.
+
+A webhook must be safe to receive more than once.
+
+---
+
+# 21. PAYMENT STATUSES
+
+Support at least:
+
+- pending
+- processing
+- successful
+- failed
+- cancelled
+- refunded
+- partially_refunded where applicable
+
+Orders and payments should not be treated as the same thing.
+
+Maintain proper separation.
+
+---
+
+# 22. PAYMENT HISTORY
+
+Create:
+
+`/account/payments`
+
+Student can see:
+
+- Order ID
+- Course
+- Amount
+- Payment method
+- Transaction ID where appropriate
+- Date
+- Status
+- Receipt
+
+Never expose sensitive provider credentials or unnecessary payment information.
+
+---
+
+# 23. DIGITAL RECEIPT / INVOICE
+
+Create receipt/invoice architecture.
+
+Receipt should contain:
+
+- AT Academy branding
+- Student name
+- Course
+- Batch
+- Order ID
+- Payment date
+- Amount
+- Discount
+- Final amount
+- Payment status
+- Transaction reference where appropriate
+
+Do not invent tax/VAT information unless actual business information is provided.
+
+Prepare for future PDF generation.
+
+---
+
+# 24. COUPON SYSTEM
+
+Implement coupon architecture.
+
+Coupon fields:
+
+- Code
+- Type
+- Percentage/fixed discount
+- Maximum discount
+- Start date
+- Expiry date
+- Usage limit
+- Per-user usage limit
+- Applicable courses
+- Applicable batches
+- Minimum order amount
+- Active/inactive
+
+Server-side validation is mandatory.
+
+Prevent:
+
+- Expired coupons
+- Disabled coupons
+- Overuse
+- Invalid course restrictions
+- Duplicate usage
+
+---
+
+# 25. DISCOUNT CALCULATION
+
+Create one centralized pricing engine.
+
+Do NOT calculate final price separately in:
+
+- Frontend
+- Checkout
+- Payment
+- Admin
+
+Use one trusted server-side calculation.
+
+Conceptually:
+
+Original Price
+− Coupon Discount
+= Final Price
+
+The final amount used for payment must come from server-side calculation.
+
+---
+
+# 26. BATCH CAPACITY
+
+For live courses, support:
+
+- Maximum seats
+- Current enrollment count
+- Available seats
+- Enrollment closed state
+
+Prevent over-enrollment.
+
+Handle concurrent enrollment safely.
+
+Do not rely only on frontend seat count.
+
+Use database-level protection/transaction logic where appropriate.
+
+---
+
+# 27. MANUAL PAYMENT VERIFICATION
+
+Prepare architecture for students who pay manually through supported channels.
+
+Possible workflow:
+
+Student submits:
+
+- Order reference
+- Transaction ID
+- Payment method
+- Amount
+- Optional screenshot/reference
+
+Status:
+
+- pending verification
+- approved
+- rejected
+
+Admin/authorized staff can later verify.
+
+Do not allow students to mark their own manual payment as successful.
+
+---
+
+# 28. REFUND REQUEST
+
+Create:
+
+`/account/refunds`
+
+Students can submit:
+
+- Order
+- Reason
+- Description
+
+Statuses:
+
+- requested
+- reviewing
+- approved
+- rejected
+- processed
+
+Refund eligibility should eventually depend on academy policy.
+
+Do not automatically issue real refunds in Phase 2 without provider configuration and explicit business rules.
+
+---
+
+# 29. PAYMENT FAILURE EXPERIENCE
+
+If payment fails:
+
+Show:
+
+- Clear failure message
+- Order reference
+- Retry payment
+- Return to course
+- Support option
+
+Do not lose the original order record.
+
+Allow safe retry.
+
+Avoid duplicate successful enrollments if a previous payment later succeeds.
+
+---
+
+# 30. ENROLLMENT SUCCESS PAGE
+
+Create:
+
+`/checkout/success`
+
+After verified successful payment:
+
+Display:
+
+- Success state
+- Course
+- Enrollment status
+- Batch
+- Start date if available
+- Dashboard CTA
+- Course CTA
+- Receipt CTA
+
+Only show "Payment successful" after server verification.
+
+---
+
+# 31. STUDENT DASHBOARD UPDATE
+
+Extend the Phase 1 dashboard.
+
+Add real sections:
+
+### My Courses
+
+- Active courses
+- Expired courses
+- Course progress
+- Continue Learning
+
+### Upcoming Classes
+
+- Date
+- Time
+- Course
+- Batch
+- Join button when authorized
+
+### Payments
+
+- Recent payments
+- Receipt shortcut
+
+### Enrollment
+
+- Active batch
+- Course expiry
+- Enrollment status
+
+Use real database data.
+
+---
+
+# 32. COURSE PAGE UPDATE
+
+Course detail page should now dynamically respond to authentication state.
+
+If user is:
+
+### Not logged in
+
+Show:
+
+"Login to enroll"
+
+### Logged in but not enrolled
+
+Show:
+
+"Enroll Now"
+
+### Payment pending
+
+Show:
+
+"Payment Pending"
+
+### Enrolled
+
+Show:
+
+"Go to Course"
+
+### Expired
+
+Show:
+
+"Access Expired"
+
+### Enrollment closed
+
+Show:
+
+"Enrollment Closed"
+
+Never expose protected content based only on frontend state.
+
+---
+
+# 33. NOTIFICATIONS FOUNDATION
+
+Create notification architecture for:
+
+- Registration
+- Email verification
+- Password reset
+- Payment initiated
+- Payment successful
+- Payment failed
+- Enrollment activated
+- Refund request
+- Refund status
+
+Actual email delivery should use a configurable provider.
+
+In-site notifications should be stored in the database.
+
+---
+
+# 34. AUDIT LOGGING
+
+Extend audit logs for sensitive events:
+
+- Registration
+- Login
+- Logout
+- Password change
+- Password reset
+- Profile change
+- Order creation
+- Payment status change
+- Enrollment creation
+- Enrollment cancellation
+- Refund action
+- Manual payment approval/rejection
+
+Do not log passwords, OTPs or sensitive authentication secrets.
+
+---
+
+# 35. SECURITY HARDENING
+
+Review Phase 1 security and strengthen it.
+
+Check:
+
+- Authentication boundaries
+- Authorization
+- IDOR vulnerabilities
+- Course access
+- Payment APIs
+- Coupon APIs
+- Enrollment APIs
+- Refund APIs
+- Profile APIs
+- Admin endpoints
+
+A student must never be able to manipulate another user's:
+
+- Order
+- Payment
+- Enrollment
+- Profile
+- Refund
+- Course access
+
+Use server-side authorization everywhere.
+
+---
+
+# 36. RATE LIMITING
+
+Apply appropriate rate limits to:
+
+- Login
+- Registration
+- Password reset
+- Verification resend
+- OTP
+- Coupon validation
+- Checkout
+- Payment initiation
+- Manual payment submission
+- Support/doubt submission
+
+Avoid overly aggressive limits that hurt legitimate students.
+
+---
+
+# 37. DATABASE INTEGRITY
+
+Review all new database relationships.
+
+Ensure:
+
+- Foreign keys
+- Unique constraints
+- Proper indexes
+- Transaction safety
+- Idempotency
+- Appropriate status constraints
+- Timestamps
+- Auditability
+
+Particularly protect:
+
+- Payment transaction IDs
+- Order IDs
+- Enrollment uniqueness
+- Coupon usage
+- Batch capacity
+
+---
+
+# 38. UI / UX REQUIREMENTS
+
+All Phase 2 screens must use the existing AT Academy design system.
+
+Use the official logo and established:
+
+- Navy
+- Blue
+- Cyan
+- White
+
+visual identity.
+
+Pages should feel like one product.
+
+Create polished states for:
+
+- Loading
+- Processing payment
+- Payment success
+- Payment failure
+- Verification
+- Empty payment history
+- Empty enrollment
+- Expired course
+- Error
+- Retry
+
+Mobile UX is extremely important.
+
+Checkout must be easy to use on smartphones.
+
+---
+
+# 39. ACCESSIBILITY
+
+Maintain:
+
+- Keyboard navigation
+- Accessible form labels
+- Focus states
+- Proper validation messages
+- Screen-reader-friendly controls
+- Sufficient contrast
+- Accessible dialogs
+- Accessible error messages
+
+Do not rely on color alone to communicate payment status.
+
+---
+
+# 40. SEO
+
+Do not index:
+
+- Checkout
+- Account
+- Dashboard
+- Payment history
+- Private enrollment pages
+- Password reset
+- Verification pages
+
+Keep public course pages indexable.
+
+---
+
+# 41. TESTING
+
+Add tests for critical flows.
+
+At minimum test:
+
+## Authentication
+
+- Register
+- Duplicate account
+- Login
+- Invalid login
+- Password reset
+- Verification
+
+## Enrollment
+
+- Enroll
+- Duplicate enrollment
+- Expired enrollment
+- Unauthorized course access
+
+## Checkout
+
+- Correct pricing
+- Invalid coupon
+- Expired coupon
+- Coupon usage limit
+- Batch capacity
+- Checkout validation
+
+## Payment
+
+- Successful payment
+- Failed payment
+- Duplicate webhook
+- Invalid transaction
+- Incorrect amount
+- Payment retry
+
+## Authorization
+
+- Student cannot access another student's order
+- Student cannot modify another enrollment
+- Student cannot approve own payment
+- Student cannot access admin endpoints
+
+---
+
+# 42. DEVELOPMENT / PRODUCTION MODE
+
+Clearly separate:
+
+Development:
+
+- Test payment providers
+- Mock providers if necessary
+- Seed/demo data
+- Development email behavior
+
+Production:
+
+- Real credentials
+- Real payment verification
+- Real email
+- Real storage
+- Real monitoring
+
+Never accidentally use test payment behavior in production.
+
+---
+
+# 43. ENVIRONMENT VARIABLES
+
+Update `.env.example`.
+
+Document variables required for:
+
+- Database
+- Authentication
+- Email
+- bKash
+- Nagad
+- Card gateway
+- Storage
+- Webhooks
+- Application URL
+- Encryption/secrets
+
+Never commit real credentials.
+
+---
+
+# 44. NO FAKE INTEGRATIONS
+
+CRITICAL:
+
+Do not claim:
+
+"bKash integrated"
+
+if no real provider credentials/API integration exists.
+
+Do not claim:
+
+"Email verification working"
+
+if no email provider is configured.
+
+Do not claim:
+
+"Payment verified"
+
+using only a fake frontend state.
+
+Instead:
+
+- Implement the correct architecture
+- Implement sandbox/development adapter if useful
+- Clearly report configuration requirements
+
+---
+
+# 45. CODE QUALITY
+
+Maintain:
+
+- TypeScript
+- Strong typing
+- Reusable components
+- Reusable server utilities
+- Service/provider abstractions
+- Clear folder structure
+- No unnecessary duplication
+- No giant monolithic components
+- No hardcoded secrets
+- No dead code
+- No console spam
+- Clear naming
+- Maintainable architecture
+
+Do not create a giant payment component containing every provider.
+
+Separate concerns.
+
+---
+
+# 46. DO NOT BREAK PHASE 1
+
+After implementation verify:
+
+- Homepage still works
+- Course catalog still works
+- Course detail still works
+- About works
+- Policies work
+- Dashboard works
+- Existing authentication remains functional
+- SEO remains functional
+- Responsive design remains functional
+
+Run regression checks.
+
+---
+
+# 47. PHASE 2 COMPLETION CHECKLIST
+
+Before declaring completion, verify:
+
+AUTH:
+
+[ ] Registration
+[ ] Login
+[ ] Verification architecture
+[ ] Password reset
+[ ] Session management
+[ ] Logout
+[ ] Logout all sessions
+[ ] Profile management
+[ ] Account deletion request
+
+ENROLLMENT:
+
+[ ] Course enrollment model
+[ ] Batch enrollment
+[ ] Access control
+[ ] Expiry
+[ ] Duplicate protection
+[ ] Capacity protection
+
+PAYMENTS:
+
+[ ] Order system
+[ ] Checkout
+[ ] Payment abstraction
+[ ] Provider architecture
+[ ] Server-side verification
+[ ] Webhook architecture
+[ ] Payment statuses
+[ ] Payment history
+[ ] Receipt/invoice architecture
+[ ] Coupon system
+[ ] Pricing engine
+[ ] Manual payment architecture
+[ ] Refund request architecture
+[ ] Retry failed payment
+
+DASHBOARD:
+
+[ ] My Courses
+[ ] Enrollment status
+[ ] Payment history
+[ ] Course access
+[ ] Upcoming class foundation
+
+SECURITY:
+
+[ ] Authorization
+[ ] Rate limiting
+[ ] Audit logs
+[ ] IDOR protection
+[ ] Payment security
+[ ] Coupon security
+[ ] Session security
+
+TESTING:
+
+[ ] Typecheck
+[ ] Lint
+[ ] Unit tests
+[ ] Integration tests
+[ ] Production build
+[ ] Regression check
+
+---
+
+# 48. FINAL EXECUTION REPORT
+
+After completing Phase 2, provide a detailed report containing:
+
+1. Files created
+2. Files modified
+3. Database/schema changes
+4. Authentication changes
+5. Enrollment changes
+6. Payment architecture
+7. Payment provider status
+8. Checkout implementation
+9. Coupon implementation
+10. Refund implementation
+11. Security improvements
+12. Routes created/modified
+13. Components created
+14. Dependencies added
+15. Environment variables required
+16. Tests performed
+17. Build result
+18. Any warnings/errors
+19. External credentials still required
+20. Remaining Phase 3 work
+
+Do not hide unfinished work.
+
+Clearly distinguish:
+
+- Fully implemented
+- Architecture ready
+- Requires external credentials
+- Not yet implemented
+
+---
+
+# START
+
+START BY INSPECTING THE CURRENT PHASE 1 IMPLEMENTATION.
+
+DO NOT REBUILD PHASE 1.
+
+DO NOT REMOVE EXISTING FEATURES.
+
+DO NOT ASK ME TO REPEAT THE FEATURE LIST.
+
+IMPLEMENT PHASE 2 ON TOP OF THE EXISTING AT ACADEMY PLATFORM.
+
+RUN ALL RELEVANT CHECKS BEFORE FINISHING.

@@ -1,0 +1,38 @@
+@charset "utf-8";
+	.NormalCharacterStyle4
+{
+	font-family : Freestyle Script;
+	font-size : 79px;
+	color : #000000;
+	color : rgb(0, 0, 0);
+	text-outline : #061950;
+	text-outline : rgb(6, 25, 80);
+}
+.NormalCharacterStyle2
+{
+	font-family : Monotype Corsiva;
+	font-size : 102px;
+	color : #000000;
+	color : rgb(0, 0, 0);
+}
+.NormalCharacterStyle
+{
+	font-family : Monotype Corsiva;
+	font-size : 27px;
+	color : #000000;
+	color : rgb(0, 0, 0);
+}
+.NormalCharacterStyle1
+{
+	font-family : Britannic Bold;
+	font-size : 97px;
+	color : #000000;
+	color : rgb(0, 0, 0);
+}
+.NormalCharacterStyle3
+{
+	font-family : Impact;
+	font-size : 137px;
+	color : #FFFFFF;
+	color : rgb(255, 255, 255);
+}
