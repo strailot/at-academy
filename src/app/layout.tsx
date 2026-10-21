@@ -12,10 +12,10 @@ const inter = Inter({
 });
 
 /**
- * `metadataBase` must be an absolute URL, but its value comes from
- * NEXT_PUBLIC_APP_URL — an environment variable that can be missing or
- * malformed. `new URL()` throws ERR_INVALID_URL on a bad value, which would
- * fail the whole build during page-data collection, so fall back instead.
+ * `metadataBase` must be an absolute URL. `site.url` is already validated and
+ * falls back to a usable origin in src/lib/site.ts, so this can no longer
+ * throw — the try/catch stays as a last-resort guard so a future change to
+ * site.url can never fail the build during page-data collection.
  */
 function metadataBase(): URL {
   try {

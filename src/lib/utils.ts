@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { site } from "@/lib/site"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -24,7 +25,9 @@ export function formatPrice(price: number, currency = "BDT"): string {
 }
 
 export function absoluteUrl(path: string = "") {
-  return `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}${path}`
+  // site.url is validated in src/lib/site.ts, so a malformed
+  // NEXT_PUBLIC_APP_URL can never leak into a generated link again.
+  return `${site.url}${path}`
 }
 
 export const fadeIn = {

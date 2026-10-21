@@ -12,10 +12,33 @@
  * application logic (see src/lib/prisma.ts and src/lib/require-course-access.ts).
  */
 
+/**
+ * Resolve the public site URL, ignoring unusable values.
+ *
+ * NEXT_PUBLIC_APP_URL is injected by the host (Vercel/Netlify). It has been
+ * observed to arrive as a placeholder such as "[SENSITIVE]" or as a relative
+ * path, neither of which is a valid absolute URL. A bad value used to crash
+ * `new URL()` during page-data collection, failing the entire build, so only
+ * accept a value that actually parses as http(s) and fall back otherwise.
+ */
+function resolveSiteUrl(): string {
+  const fallback = "https://at-academy.netlify.app";
+  const raw = process.env.NEXT_PUBLIC_APP_URL?.trim();
+  if (!raw) return fallback;
+  try {
+    const parsed = new URL(raw);
+    return parsed.protocol === "http:" || parsed.protocol === "https:"
+      ? parsed.origin
+      : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export const site = {
   name: "AT Academy",
   tagline: "SSC Chemistry learning platform — from fundamentals to board-style exam preparation.",
-  url: process.env.NEXT_PUBLIC_APP_URL || "https://at-academy.com",
+  url: resolveSiteUrl(),
   email: "support@at-academy.com",
   emailAlt: "info@at-academy.com",
   phone: "+880 1712-345678",
